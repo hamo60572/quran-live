@@ -11,4 +11,4 @@ jobs:
         run: |
           ffmpeg -re -i "https://server8.mp3quran.net/afs/001.mp3" \
           -c:v copy -c:a aac -f flv \
-          "${{ secrets.STREAM_URL }}${{ secrets.STREAM_KEY }}"
+          "${{secrets.STREAM_URL}}${{secrets.STREAM_KEY}}"
