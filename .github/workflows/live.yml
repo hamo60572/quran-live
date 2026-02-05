@@ -1,4 +1,4 @@
-name: Quran Live Simple
+name: Quran Live Constant
 on:
   workflow_dispatch:
 jobs:
@@ -9,6 +9,6 @@ jobs:
         run: sudo apt update && sudo apt install ffmpeg -y
       - name: Start Stream
         run: |
-          ffmpeg -re -stream_loop -1 -i "https://backup.quran.com.kw/yasser" \
+          ffmpeg -re -i "https://live.mp3quran.net:8006/maher" \
           -vn -c:a aac -b:a 128k -ar 44100 -f flv \
           "${{secrets.STREAM_URL}}${{secrets.STREAM_KEY}}"
