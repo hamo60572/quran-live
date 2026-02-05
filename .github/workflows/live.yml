@@ -9,7 +9,7 @@ jobs:
         run: sudo apt update && sudo apt install ffmpeg -y
       - name: Start Stream
         run: |
-          ffmpeg -re -stream_loop -1 -i "https://n0a.radiojar.com/vunm73m7y08uv" \
+          ffmpeg -re -stream_loop -1 -i "https://archive.org/download/081_20201111/081.mp3" \
           -vn -c:a aac -b:a 128k -ar 44100 -f flv \
           "${{secrets.STREAM_URL}}${{secrets.STREAM_KEY}}"
           
