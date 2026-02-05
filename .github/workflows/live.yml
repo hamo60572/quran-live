@@ -1,4 +1,4 @@
-name: Quran Live
+name: Quran Live Stable
 on:
   workflow_dispatch:
 jobs:
@@ -9,7 +9,9 @@ jobs:
         run: sudo apt update && sudo apt install ffmpeg -y
       - name: Start Stream
         run: |
-          ffmpeg -re -stream_loop -1 -i "https://archive.org/download/081_20201111/081.mp3" \
-          -vn -c:a aac -b:a 128k -ar 44100 -f flv \
+          ffmpeg -re -loop 1 -i "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500" \
+          -re -stream_loop -1 -i "https://archive.org/download/081_20201111/081.mp3" \
+          -c:v libx264 -preset ultrafast -tune stillimage -pix_fmt yuv420p \
+          -c:a aac -b:a 128k -ar 44100 -shortest -f flv \
           "${{secrets.STREAM_URL}}${{secrets.STREAM_KEY}}"
           
