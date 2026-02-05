@@ -9,6 +9,7 @@ jobs:
         run: sudo apt update && sudo apt install ffmpeg -y
       - name: Start Stream
         run: |
-          ffmpeg -re -i "https://server8.mp3quran.net/afs/001.mp3" \
+          ffmpeg -re -stream_loop -1 -i "https://n02.radiojar.com/8s5u8p7n908uv" \
           -vn -c:a aac -b:a 128k -ar 44100 -f flv \
           "${{secrets.STREAM_URL}}${{secrets.STREAM_KEY}}"
+          "
