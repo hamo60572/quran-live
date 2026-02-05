@@ -1,4 +1,4 @@
-name: Quran Live Stable
+name: Quran Live Stable Pro
 on:
   workflow_dispatch:
 jobs:
@@ -9,9 +9,7 @@ jobs:
         run: sudo apt update && sudo apt install ffmpeg -y
       - name: Start Stream
         run: |
-          ffmpeg -re -loop 1 -i "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500" \
-          -re -stream_loop -1 -i "https://archive.org/download/081_20201111/081.mp3" \
-          -c:v libx264 -preset ultrafast -tune stillimage -pix_fmt yuv420p \
-          -c:a aac -b:a 128k -ar 44100 -shortest -f flv \
+          ffmpeg -re -loop 1 -i "https://raw.githubusercontent.com/hamo60572/quran-live/main/README.md" -i "https://server8.mp3quran.net/lhdan/001.mp3" \
+          -t 24:00:00 -f lavfi -i color=c=black:s=640x360 -filter_complex "[1:a]showwaves=s=640x120:mode=line:colors=white[v];[2:v][v]overlay=0:H-h[outv]" \
+          -map "[outv]" -map 1:a -c:v libx264 -preset ultrafast -b:v 500k -c:a aac -b:a 128k -f flv \
           "${{secrets.STREAM_URL}}${{secrets.STREAM_KEY}}"
-          
