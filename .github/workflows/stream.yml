@@ -8,18 +8,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Install tools
+      - name: Install FFmpeg
         run: |
           sudo apt update
-          sudo apt install -y ffmpeg python3-pip
-          pip3 install yt-dlp
+          sudo apt install -y ffmpeg
 
-      - name: Stream playlist
+      - name: Stream Al-Luhaidan
         env:
           RTMP_URL: ${{ secrets.RTMP_URL }}
         run: |
-          while true
-          do
-            yt-dlp -f bestaudio -o - "https://youtube.com/playlist?list=PLGevIIwmDHvx43l376DskI5lppva7WNvF" | \
-            ffmpeg -re -i pipe:0 -vn -c:a aac -b:a 128k -f flv "$RTMP_URL"
-          done
+          ffmpeg -re \
+          -i "https://stream.zeno.fm/radio/online-quran-radio-quran-in-arabic-by-sheikh-mohammed-al-luhaidan" \
+          -vn \
+          -c:a aac \
+          -b:a 128k \
+          -f flv "$RTMP_URL"
