@@ -1,0 +1,25 @@
+name: Quran Stream
+
+on:
+  workflow_dispatch:
+
+jobs:
+  stream:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install tools
+        run: |
+          sudo apt update
+          sudo apt install -y ffmpeg python3-pip
+          pip3 install yt-dlp
+
+      - name: Stream playlist
+        env:
+          RTMP_URL: ${{ secrets.RTMP_URL }}
+        run: |
+          while true
+          do
+            yt-dlp -f bestaudio -o - "https://youtube.com/playlist?list=PLGevIIwmDHvx43l376DskI5lppva7WNvF" | \
+            ffmpeg -re -i pipe:0 -vn -c:a aac -b:a 128k -f flv "$RTMP_URL"
+          done
