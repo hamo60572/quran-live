@@ -13,12 +13,12 @@ jobs:
           sudo apt update
           sudo apt install -y ffmpeg
 
-      - name: Stream Al-Luhaidan
+      - name: Stream Quran
         env:
           RTMP_URL: ${{ secrets.RTMP_URL }}
         run: |
           ffmpeg -re \
-          -i "https://stream.zeno.fm/radio/online-quran-radio-quran-in-arabic-by-sheikh-mohammed-al-luhaidan" \
+          -i "https://server8.mp3quran.net/lhdan/001.mp3" \
           -vn \
           -c:a aac \
           -b:a 128k \
