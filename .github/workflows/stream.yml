@@ -11,15 +11,18 @@ jobs:
       - name: Install FFmpeg
         run: |
           sudo apt update
-          sudo apt install -y ffmpeg
+          sudo apt install -y ffmpeg curl
 
-      - name: Stream Quran
+      - name: Stream Full Quran
         env:
           RTMP_URL: ${{ secrets.RTMP_URL }}
         run: |
-          ffmpeg -re \
-          -i "https://server8.mp3quran.net/lhdan/001.mp3" \
-          -vn \
-          -c:a aac \
-          -b:a 128k \
-          -f flv "$RTMP_URL"
+          for i in $(seq -w 1 114)
+          do
+            ffmpeg -re \
+            -i "https://server8.mp3quran.net/lhdan/${i}.mp3" \
+            -vn \
+            -c:a aac \
+            -b:a 128k \
+            -f flv "$RTMP_URL"
+          done
