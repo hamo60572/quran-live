@@ -1,13 +1,29 @@
+# VERSION 999
+
 FROM ubuntu:22.04
 
-RUN apt-get update && apt-get install -y curl
+RUN apt-get update && \
+    apt-get install -y ffmpeg bash
 
 CMD bash -c '
-for i in $(seq -f "%03g" 1 10)
-do
-  echo "CHECKING $i"
-  curl -I "https://server8.mp3quran.net/lhdan/${i}.mp3"
-done
+echo "STARTED NEW VERSION"
 
-sleep 600
+while true
+do
+  for i in $(seq -f "%03g" 1 114)
+  do
+    echo "Playing Surah $i"
+
+    ffmpeg -re \
+      -i "https://server8.mp3quran.net/lhdan/${i}.mp3" \
+      -vn \
+      -c:a aac \
+      -b:a 128k \
+      -f flv "$RTMP_URL"
+
+    echo "Finished Surah $i"
+  done
+
+  echo "Quran finished, restarting..."
+done
 '
