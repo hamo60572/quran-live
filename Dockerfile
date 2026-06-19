@@ -1,28 +1,20 @@
 FROM ubuntu:22.04
 
-RUN apt-get update && \
-    apt-get install -y ffmpeg bash
+RUN apt-get update && apt-get install -y ffmpeg bash
 
 CMD bash -c '
-echo "QURAN LOOP STARTED"
+cat > playlist.txt << EOF
+https://server8.mp3quran.net/lhdan/001.mp3
+https://server8.mp3quran.net/lhdan/002.mp3
+https://server8.mp3quran.net/lhdan/003.mp3
+https://server8.mp3quran.net/lhdan/004.mp3
+https://server8.mp3quran.net/lhdan/005.mp3
+EOF
 
-while true
+while read url
 do
-  for i in $(seq -f "%03g" 1 114)
-  do
-    echo "Playing Surah $i"
-
-    ffmpeg -nostdin -re \
-      -i "https://server8.mp3quran.net/lhdan/${i}.mp3" \
-      -vn \
-      -c:a aac \
-      -b:a 128k \
-      -f flv "$RTMP_URL" || true
-
-    echo "Finished Surah $i"
-    sleep 1
-  done
-
-  echo "Finished Quran - restarting from Al-Fatihah"
-done
+  ffmpeg -re -i "$url" \
+    -vn -c:a aac -b:a 128k \
+    -f flv "$RTMP_URL"
+done < playlist.txt
 '
